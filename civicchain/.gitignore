@@ -1,0 +1,12 @@
+node_modules/
+.env
+.data/
+data/*.json
+data/*.pem
+circuits/build/
+artifacts/
+cache/
+coverage/
+*.log
+.DS_Store
+contracts/Groth16Verifier.sol
