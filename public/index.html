@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b111d">
+  <meta name="description" content="CivicChain is an academic research prototype exploring privacy-conscious, independently verifiable digital voting.">
+  <title>CivicChain — Private by design. Verifiable by everyone.</title>
+  <link rel="icon" href="/assets/civicchain-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header" id="site-header">
+      <a class="brand" href="/" aria-label="CivicChain home">
+        <img src="/assets/civicchain-mark.svg" alt="" width="28" height="28">
+        <span>CIVICCHAIN</span>
+      </a>
+      <button class="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded="false" data-action="toggle-menu"><span></span><span></span></button>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="/elections" data-route-link>THE ELECTIONS</a>
+        <a href="/network" data-route-link>THE NETWORK</a>
+        <a href="/verify-ballot" data-route-link>VERIFICATION</a>
+        <a href="/docs" data-route-link>METHODOLOGY</a>
+      </nav>
+      <div class="header-actions" id="header-actions"></div>
+    </header>
+    <main id="app" tabindex="-1">
+      <div class="initial-loading"><span class="spinner"></span><span>INITIALIZING CIVICCHAIN</span></div>
+    </main>
+    <footer class="site-footer" id="site-footer">
+      <div class="footer-top">
+        <a class="brand brand-footer" href="/"><img src="/assets/civicchain-mark.svg" alt="" width="25" height="25"><span>CIVICCHAIN</span></a>
+        <p>Private by design. Verifiable by everyone.</p>
+        <span class="prototype-tag"><span class="status-dot"></span> ACADEMIC RESEARCH PROTOTYPE</span>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="current-year">2026</span> CIVICCHAIN PROJECT</span>
+        <div><a href="/docs">DOCUMENTATION</a><a href="/privacy">PRIVACY NOTICE</a><a href="/verify-ballot">PUBLIC VERIFICATION</a><a href="/docs#limitations">SECURITY LIMITATIONS</a></div>
+        <span>BUILT FOR TRANSPARENCY, NOT OVERCLAIMS.</span>
+      </div>
+    </footer>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" class="dialog-inner"><span class="eyebrow">CONFIRM ACTION</span><h2 id="dialog-title">Are you sure?</h2><p id="dialog-copy">This action cannot be silently reversed.</p><div class="dialog-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-dark" value="confirm" id="dialog-confirm">Continue <span class="arrow">↗</span></button></div></form>
+  </dialog>
+</body>
+</html>
