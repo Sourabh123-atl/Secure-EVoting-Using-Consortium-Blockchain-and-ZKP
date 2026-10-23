@@ -142,7 +142,7 @@ async function renderVoting(electionId) {
 }
 
 function renderLogin() {
-  appRoot.innerHTML = `<div class="page auth-page"><section class="auth-visual"><div class="eyebrow" style="color:#b0bfd2">A MORE VERIFIABLE PROCESS</div><h1 class="auth-quote">Trust should be earned through evidence.</h1><p>CivicChain explores the boundaries between privacy, integrity and public verification. This local account area is for academic demonstration only.</p></section><section class="auth-form-area"><div class="form-panel"><div class="eyebrow">WELCOME BACK</div><h2 style="margin-top:16px">Sign in to CivicChain.</h2><p>Use your research account to access the relevant workflow.</p><form id="login-form"><div class="form-field"><label for="login-email">Email address</label><input id="login-email" name="email" type="email" autocomplete="username" required placeholder="you@example.edu"></div><div class="form-field"><label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="At least 12 characters"></div><div class="form-footer"><button class="button button-dark" type="submit">SIGN IN <span class="arrow">↗</span></button><a class="text-link" href="/register">CREATE ACCOUNT →</a></div><p class="auth-links"><a href="/forgot-password">FORGOT YOUR PASSWORD?</a></p><div id="login-feedback" aria-live="polite"></div></form><div class="security-note"><span class="shield">◇</span><span>Sessions use an HTTP-only cookie. Do not use these development accounts or this app for real voter identity information.</span></div><p class="auth-links">DEMO ACCOUNTS<br><span class="mono">admin@civicchain.local</span> · <span class="mono">voter@civicchain.local</span><br><span class="micro">Password for seeded accounts: CivicChainDemo!26</span></p></div></section></div>`;
+  appRoot.innerHTML = `<div class="page auth-page"><section class="auth-visual"><div class="eyebrow" style="color:#b0bfd2">A MORE VERIFIABLE PROCESS</div><h1 class="auth-quote">Trust should be earned through evidence.</h1><p>CivicChain explores the boundaries between privacy, integrity and public verification. This local account area is for academic demonstration only.</p></section><section class="auth-form-area"><div class="form-panel"><div class="eyebrow">WELCOME BACK</div><h2 style="margin-top:16px">Sign in to CivicChain.</h2><p>Use your research account to access the relevant workflow.</p><form id="login-form"><div class="form-field"><label for="login-email">Email address</label><input id="login-email" name="email" type="email" autocomplete="username" required placeholder="you@example.edu"></div><div class="form-field"><label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="At least 12 characters"></div><div class="form-footer"><button class="button button-dark" type="submit">SIGN IN <span class="arrow">↗</span></button><a class="text-link" href="/register">CREATE ACCOUNT →</a></div><p class="auth-links"><a href="/forgot-password">FORGOT YOUR PASSWORD?</a></p><div id="login-feedback" aria-live="polite"></div></form><div class="security-note"><span class="shield">◇</span><span>Sessions use an HTTP-only cookie. Do not use these development accounts or this app for real voter identity information.</span></div><div class="demo-accounts-box"><h3 class="demo-accounts-title">Demo accounts</h3><table class="demo-accounts-table"><thead><tr><th style="width:40%">Role</th><th>Login email</th></tr></thead><tbody><tr class="demo-row" data-email="admin@civicchain.local" data-pass="CivicChainDemo!26" title="Click to auto-fill Administrator credentials"><td class="role-cell">Administrator</td><td class="email-cell"><code>admin@civicchain.local</code></td></tr><tr class="demo-row" data-email="voter@civicchain.local" data-pass="CivicChainDemo!26" title="Click to auto-fill Voter credentials"><td class="role-cell">Voter</td><td class="email-cell"><code>voter@civicchain.local</code></td></tr><tr class="demo-row" data-email="auditor@civicchain.local" data-pass="CivicChainDemo!26" title="Click to auto-fill Auditor credentials"><td class="role-cell">Auditor</td><td class="email-cell"><code>auditor@civicchain.local</code></td></tr></tbody></table><div class="demo-accounts-note"><span>Default password: <code>CivicChainDemo!26</code></span><span class="micro">Click any row to fill</span></div></div></div></section></div>`;
 }
 
 function renderRegister() {
@@ -415,6 +415,18 @@ appRoot.addEventListener('click', async event => {
     const query = document.getElementById('election-search')?.value || '';
     try { state.elections = (await api(`/api/v1/elections?status=${encodeURIComponent(status)}&q=${encodeURIComponent(query)}`)).elections; updateElectionList(); }
     catch (error) { toast('Could not filter elections', error.message, 'error'); }
+  }
+  const demoRow = event.target.closest('.demo-row');
+  if (demoRow) {
+    const emailInput = document.getElementById('login-email');
+    const passInput = document.getElementById('login-password');
+    if (emailInput && passInput) {
+      emailInput.value = demoRow.dataset.email || '';
+      passInput.value = demoRow.dataset.pass || '';
+      emailInput.focus();
+      toast('Demo account loaded', `Credentials loaded for ${demoRow.querySelector('.role-cell')?.textContent || 'selected role'}.`, 'success');
+    }
+    return;
   }
   const actionNode = event.target.closest('[data-action]');
   if (!actionNode) return;

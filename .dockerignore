@@ -5,6 +5,8 @@ node_modules
 .data
 data/*.json
 data/*.pem
+civicchain/data/*.json
+civicchain/data/*.pem
 circuits/build
 artifacts
 cache

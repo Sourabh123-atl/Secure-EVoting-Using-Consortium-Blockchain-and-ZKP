@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: civicchain-evoting
+    env: node
+    plan: free
+    buildCommand: "npm run build"
+    startCommand: "npm start"
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOW_DEMO_ACCOUNTS
+        value: "true"
+      - key: CIVICCHAIN_DATA_DIR
+        value: /tmp/civicchain-data

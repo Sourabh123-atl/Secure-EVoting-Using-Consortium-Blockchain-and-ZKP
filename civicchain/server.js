@@ -39,8 +39,13 @@ function verifyPassword(password, stored) {
   return actual.length === expectedBuffer.length && crypto.timingSafeEqual(actual, expectedBuffer);
 }
 
+function isProductionWithoutDemo() {
+  const allowDemo = process.env.ALLOW_DEMO_ACCOUNTS === 'true' || process.env.DEMO_MODE === 'true';
+  return process.env.NODE_ENV === 'production' && !allowDemo;
+}
+
 function defaultDb() {
-  const production = process.env.NODE_ENV === 'production';
+  const production = isProductionWithoutDemo();
   const now = new Date().toISOString();
   const demoHash = () => hashPassword('CivicChainDemo!26');
   const users = production ? [] : [
@@ -85,7 +90,7 @@ function loadDb() {
     db.ballots ||= [];
     db.transactions ||= [];
     db.auditEvents ||= [];
-    if (process.env.NODE_ENV === 'production') {
+    if (isProductionWithoutDemo()) {
       let disabledDemoAccounts = 0;
       for (const account of db.users) {
         if (account.status === 'ACTIVE' && verifyPassword('CivicChainDemo!26', account.passwordHash)) {
@@ -390,7 +395,7 @@ async function handleApi(req, res, url) {
     const genericMessage = 'If the address belongs to a local demo account, a password-reset message has been queued. This prototype does not send real email.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return errorJson(res, 400, 'VALIDATION_ERROR', 'Enter a valid email address.');
     const found = db.users.find(item => item.email === email && item.status === 'ACTIVE');
-    if (!found || process.env.NODE_ENV === 'production') {
+    if (!found || isProductionWithoutDemo()) {
       audit('anonymous', 'PASSWORD_RESET_REQUESTED', 'authentication', 'ACCEPTED', { deliveryConfigured: false });
       return json(res, 202, { message: genericMessage });
     }
